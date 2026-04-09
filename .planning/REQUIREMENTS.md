@@ -155,16 +155,18 @@ Which phases cover which requirements. Updated during roadmap creation.
 | PROF-04 | Phase 2 | Pending |
 | PROF-05 | Phase 2 | Pending |
 | PROF-06 | Phase 2 | Pending |
-| DISC-01 | Phase 2 | Pending |
-| DISC-02 | Phase 2 | Pending |
-| DISC-03 | Phase 2 | Pending |
-| DISC-04 | Phase 2 | Pending |
-| DISC-05 | Phase 2 | Pending |
-| DISC-06 | Phase 2 | Pending |
 | AVAIL-01 | Phase 2 | Pending |
 | AVAIL-02 | Phase 2 | Pending |
 | AVAIL-03 | Phase 2 | Pending |
 | AVAIL-04 | Phase 2 | Pending |
+| MENT-01 | Phase 2 | Pending |
+| MENT-02 | Phase 2 | Pending |
+| DISC-01 | Phase 3 | Pending |
+| DISC-02 | Phase 3 | Pending |
+| DISC-03 | Phase 3 | Pending |
+| DISC-04 | Phase 3 | Pending |
+| DISC-05 | Phase 3 | Pending |
+| DISC-06 | Phase 3 | Pending |
 | BOOK-01 | Phase 3 | Pending |
 | BOOK-02 | Phase 3 | Pending |
 | BOOK-03 | Phase 3 | Pending |
@@ -176,29 +178,27 @@ Which phases cover which requirements. Updated during roadmap creation.
 | PAY-03 | Phase 3 | Pending |
 | PAY-04 | Phase 3 | Pending |
 | PAY-05 | Phase 3 | Pending |
+| MENT-03 | Phase 3 | Pending |
+| NOTF-01 | Phase 3 | Pending |
+| NOTF-02 | Phase 3 | Pending |
+| NOTF-03 | Phase 3 | Pending |
 | DASH-01 | Phase 4 | Pending |
 | DASH-02 | Phase 4 | Pending |
 | DASH-03 | Phase 4 | Pending |
 | DASH-04 | Phase 4 | Pending |
 | DASH-05 | Phase 4 | Pending |
-| MENT-01 | Phase 2 | Pending |
-| MENT-02 | Phase 2 | Pending |
-| MENT-03 | Phase 3 | Pending |
 | MENT-04 | Phase 4 | Pending |
 | REV-01 | Phase 4 | Pending |
 | REV-02 | Phase 4 | Pending |
 | REV-03 | Phase 4 | Pending |
 | REV-04 | Phase 4 | Pending |
-| NOTF-01 | Phase 3 | Pending |
-| NOTF-02 | Phase 3 | Pending |
-| NOTF-03 | Phase 3 | Pending |
 | NOTF-04 | Phase 4 | Pending |
 
 **Coverage:**
 - v1 requirements: 44 total
 - Mapped to phases: 44
-- Unmapped: 0 ✓
+- Unmapped: 0
 
 ---
 *Requirements defined: 2026-04-09*
-*Last updated: 2026-04-09 after initial definition*
+*Last updated: 2026-04-09 after roadmap creation*
