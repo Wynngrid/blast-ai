@@ -6,6 +6,12 @@ export async function updateSession(request: NextRequest) {
     request,
   })
 
+  // Skip Supabase auth if environment variables are not configured
+  // This allows the dev server to run before Supabase project is set up
+  if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) {
+    return { supabaseResponse, user: null }
+  }
+
   const supabase = createServerClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
