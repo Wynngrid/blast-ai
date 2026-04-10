@@ -29,13 +29,13 @@ Decimal phases appear between their surrounding integers in numeric order.
   3. Practitioner can apply with email/password and application is visible to admin
   4. Admin can approve or reject practitioner applications
   5. User session persists across browser refresh without re-login
-**Plans**: TBD
+**Plans**: 3 plans
 **UI hint**: yes
 
 Plans:
-- [ ] 01-01: TBD
-- [ ] 01-02: TBD
-- [ ] 01-03: TBD
+- [x] 01-01-PLAN.md — Bootstrap Next.js 16 + Supabase, database schema with RLS
+- [x] 01-02-PLAN.md — Auth UI (login, signup, OAuth) and server actions
+- [ ] 01-03-PLAN.md — Gap closure: role-based landing pages and admin approval UI
 
 ### Phase 2: Practitioner Supply
 **Goal**: Practitioners can create complete profiles and manage their availability independently
@@ -108,7 +108,7 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Foundation & Authentication | 0/3 | Not started | - |
+| 1. Foundation & Authentication | 0/3 | In progress | - |
 | 2. Practitioner Supply | 0/3 | Not started | - |
 | 3. Discovery, Booking & Payments | 0/3 | Not started | - |
 | 4. Enterprise Dashboard & Trust | 0/2 | Not started | - |
