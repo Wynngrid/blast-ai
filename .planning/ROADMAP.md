@@ -35,7 +35,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 Plans:
 - [x] 01-01-PLAN.md — Bootstrap Next.js 16 + Supabase, database schema with RLS
 - [x] 01-02-PLAN.md — Auth UI (login, signup, OAuth) and server actions
-- [ ] 01-03-PLAN.md — Gap closure: role-based landing pages and admin approval UI
+- [x] 01-03-PLAN.md — Gap closure: role-based landing pages and admin approval UI
 
 ### Phase 2: Practitioner Supply
 **Goal**: Practitioners can create complete profiles and manage their availability independently

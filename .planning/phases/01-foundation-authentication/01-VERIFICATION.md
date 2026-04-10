@@ -1,44 +1,26 @@
 ---
 phase: 01-foundation-authentication
-verified: 2026-04-10T12:00:00Z
-status: gaps_found
-score: 3/5 must-haves verified
+verified: 2026-04-10T18:30:00Z
+status: passed
+score: 5/5 must-haves verified
 overrides_applied: 0
-gaps:
-  - truth: "Admin can approve or reject practitioner applications"
-    status: failed
-    reason: "No admin interface exists - RLS policies support it but no UI to invoke approval/rejection"
-    artifacts:
-      - path: "src/app/admin"
-        issue: "Directory does not exist - admin cannot access approval interface"
-    missing:
-      - "Admin page/dashboard at /admin route"
-      - "Server action to update practitioner.application_status to 'approved' or 'rejected'"
-      - "UI to list pending practitioners and approve/reject buttons"
-  - truth: "Enterprise buyer can create account with email/password and see dashboard"
-    status: partial
-    reason: "Account creation works, but /dashboard route does not exist - redirect fails"
-    artifacts:
-      - path: "src/app/dashboard"
-        issue: "Directory does not exist - enterprise users get 404 after signup"
-    missing:
-      - "Dashboard page at /dashboard route (even placeholder)"
-  - truth: "Practitioner can apply with email/password and see pending status"
-    status: partial
-    reason: "Application creation works, but /portal/pending route does not exist - redirect fails"
-    artifacts:
-      - path: "src/app/portal"
-        issue: "Directory does not exist - practitioners get 404 after signup"
-    missing:
-      - "Portal page at /portal/pending route showing application pending status"
+re_verification:
+  previous_status: gaps_found
+  previous_score: 3/5
+  gaps_closed:
+    - "Admin can approve or reject practitioner applications"
+    - "Enterprise buyer can create account with email/password and see dashboard"
+    - "Practitioner can apply with email/password and see pending status"
+  gaps_remaining: []
+  regressions: []
 ---
 
 # Phase 1: Foundation & Authentication Verification Report
 
 **Phase Goal:** All user types can securely access the platform with role-appropriate permissions
-**Verified:** 2026-04-10T12:00:00Z
-**Status:** gaps_found
-**Re-verification:** No — initial verification
+**Verified:** 2026-04-10T18:30:00Z
+**Status:** passed
+**Re-verification:** Yes — after gap closure (Plan 01-03)
 
 ## Goal Achievement
 
@@ -46,13 +28,15 @@ gaps:
 
 | # | Truth | Status | Evidence |
 |---|-------|--------|----------|
-| 1 | Enterprise buyer can create account with email/password and log in | ⚠️ PARTIAL | signupEnterprise creates user+profile+enterprise record, login works, but /dashboard route missing (404 after redirect) |
-| 2 | Enterprise buyer can sign up and log in via Google OAuth | ✓ VERIFIED | OAuth flow configured, callback handler creates profile+enterprise, redirects to /dashboard (but route missing) |
-| 3 | Practitioner can apply with email/password and application is visible to admin | ⚠️ PARTIAL | signupPractitioner creates user+profile+practitioner with status='pending', but no admin UI to view applications |
-| 4 | Admin can approve or reject practitioner applications | ✗ FAILED | RLS policies allow admin updates, but no admin interface exists - no page at /admin, no approval server action |
+| 1 | Enterprise buyer can create account with email/password and log in | ✓ VERIFIED | signupEnterprise creates user+profile+enterprise record, login works, /dashboard route exists and displays company name |
+| 2 | Enterprise buyer can sign up and log in via Google OAuth | ✓ VERIFIED | OAuth flow configured, callback handler creates profile+enterprise, redirects to /dashboard successfully |
+| 3 | Practitioner can apply with email/password and application is visible to admin | ✓ VERIFIED | signupPractitioner creates pending practitioner record, admin page lists pending applications with bio and specializations |
+| 4 | Admin can approve or reject practitioner applications | ✓ VERIFIED | Admin page at /admin displays pending practitioners with Approve/Reject buttons, approvePractitioner/rejectPractitioner server actions update application_status |
 | 5 | User session persists across browser refresh without re-login | ✓ VERIFIED | Middleware calls updateSession on every request, uses getUser() for JWT validation |
 
-**Score:** 3/5 truths verified (2 VERIFIED, 2 PARTIAL, 1 FAILED)
+**Score:** 5/5 truths verified
+
+**Re-verification Summary:** All 3 gaps from previous verification have been closed by Plan 01-03. No regressions detected.
 
 ### Required Artifacts
 
@@ -70,9 +54,15 @@ gaps:
 | `src/app/(auth)/callback/route.ts` | OAuth callback handler | ✓ VERIFIED | Exports GET, exchanges code, creates profile/enterprise for new OAuth users |
 | `src/actions/auth.ts` | Server actions for auth | ✓ VERIFIED | Exports login, signupEnterprise, signupPractitioner, signInWithGoogle |
 | `src/lib/validations/auth.ts` | Zod schemas for auth forms | ✓ VERIFIED | Exports loginSchema, enterpriseSignupSchema, practitionerSignupSchema |
-| `src/app/dashboard` | Enterprise dashboard | ✗ MISSING | Auth redirects here but route does not exist |
-| `src/app/portal` | Practitioner portal | ✗ MISSING | Auth redirects here but route does not exist |
-| `src/app/admin` | Admin interface | ✗ MISSING | No admin approval UI - required for AUTH-04 |
+| `src/app/dashboard/page.tsx` | Enterprise dashboard | ✓ VERIFIED | Displays welcome message with profile.display_name and enterprise.company_name |
+| `src/app/dashboard/layout.tsx` | Dashboard role protection | ✓ VERIFIED | Checks profile.role !== 'enterprise', redirects non-enterprise users |
+| `src/app/portal/page.tsx` | Practitioner portal | ✓ VERIFIED | Conditional rendering based on application_status (pending/approved/rejected) |
+| `src/app/portal/pending/page.tsx` | Pending status page | ✓ VERIFIED | Shows "Application Under Review" with application date and 48-hour timeline |
+| `src/app/portal/layout.tsx` | Portal role protection | ✓ VERIFIED | Checks profile.role !== 'practitioner', redirects non-practitioner users |
+| `src/app/admin/page.tsx` | Admin dashboard | ✓ VERIFIED | Displays pending applications count and PendingPractitionersList component |
+| `src/app/admin/layout.tsx` | Admin role protection | ✓ VERIFIED | Checks profile.role !== 'admin', redirects non-admin users |
+| `src/actions/admin.ts` | Admin server actions | ✓ VERIFIED | Exports getPendingPractitioners, approvePractitioner, rejectPractitioner with admin role verification |
+| `src/components/features/admin/pending-practitioners-list.tsx` | Admin approval UI | ✓ VERIFIED | Client component with Approve/Reject buttons, useTransition for optimistic updates |
 
 ### Key Link Verification
 
@@ -83,86 +73,115 @@ gaps:
 | src/app/(auth)/callback/route.ts | src/lib/supabase/server.ts | supabase client import | ✓ WIRED | Uses createClient from server.ts |
 | src/middleware.ts | src/lib/supabase/middleware.ts | import updateSession | ✓ WIRED | Import and call verified |
 | src/lib/supabase/server.ts | @supabase/ssr | createServerClient import | ✓ WIRED | Uses createServerClient from @supabase/ssr |
+| src/app/admin/page.tsx | src/actions/admin.ts | server action import | ✓ WIRED | Imports getPendingPractitioners, called in component |
+| src/components/features/admin/pending-practitioners-list.tsx | src/actions/admin.ts | approve/reject action calls | ✓ WIRED | Calls approvePractitioner and rejectPractitioner on button clicks |
+| src/app/dashboard/page.tsx | profiles table | database query | ✓ WIRED | Queries profiles.display_name, renders in welcome message |
+| src/app/dashboard/page.tsx | enterprises table | database query | ✓ WIRED | Queries enterprises.company_name, renders below welcome |
+| src/app/portal/page.tsx | practitioners table | database query | ✓ WIRED | Queries application_status, full_name, specializations, renders conditionally |
+| src/actions/admin.ts | practitioners table | database update | ✓ WIRED | Updates application_status to 'approved' or 'rejected' with timestamps |
 
 ### Data-Flow Trace (Level 4)
 
-Not applicable for this phase - foundation phase has no data rendering components, only auth flows and database setup.
+| Artifact | Data Variable | Source | Produces Real Data | Status |
+|----------|---------------|--------|-------------------|--------|
+| src/app/dashboard/page.tsx | profile | supabase.from('profiles').select('display_name').eq('id', user.id) | Yes - database query | ✓ FLOWING |
+| src/app/dashboard/page.tsx | enterprise | supabase.from('enterprises').select('company_name').eq('user_id', user.id) | Yes - database query | ✓ FLOWING |
+| src/app/portal/page.tsx | practitioner | supabase.from('practitioners').select(...).eq('user_id', user.id) | Yes - database query | ✓ FLOWING |
+| src/app/admin/page.tsx | practitioners | getPendingPractitioners() → database query | Yes - queries practitioners table with status='pending' | ✓ FLOWING |
+
+**Data-Flow Status:** All pages query real database tables and render fetched data. No static/hardcoded values for user-specific content.
 
 ### Behavioral Spot-Checks
 
 | Behavior | Command | Result | Status |
 |----------|---------|--------|--------|
-| Next.js project builds | npm run build | Build succeeded, 10 routes generated | ✓ PASS |
-| TypeScript compiles | tsc during build | Compiled successfully in 1550ms | ✓ PASS |
+| Next.js project builds | npm run build | Build succeeded in 1842ms, 12 routes generated | ✓ PASS |
+| TypeScript compiles | tsc during build | Compiled successfully in 2.9s | ✓ PASS |
 | Auth pages exist | build route list | /login, /signup, /signup/enterprise, /signup/practitioner, /callback all present | ✓ PASS |
+| Dashboard route exists | build route list | /dashboard present (Dynamic) | ✓ PASS |
+| Portal routes exist | build route list | /portal and /portal/pending present (Dynamic) | ✓ PASS |
+| Admin route exists | build route list | /admin present (Dynamic) | ✓ PASS |
 
 ### Requirements Coverage
 
 | Requirement | Source Plan | Description | Status | Evidence |
 |-------------|-------------|-------------|--------|----------|
-| AUTH-01 | 01-02 | Enterprise buyer can sign up with email/password | ⚠️ PARTIAL | signupEnterprise works, /dashboard missing |
-| AUTH-02 | 01-02 | Enterprise buyer can sign up/login with Google OAuth | ⚠️ PARTIAL | OAuth flow works, /dashboard missing |
-| AUTH-03 | 01-02 | Practitioner can apply with email/password (pending approval) | ⚠️ PARTIAL | signupPractitioner creates pending record, /portal missing |
-| AUTH-04 | Neither plan | Admin can approve/reject practitioner applications | ✗ BLOCKED | No admin UI or approval action exists |
+| AUTH-01 | 01-02, 01-03 | Enterprise buyer can sign up with email/password | ✓ SATISFIED | signupEnterprise works, /dashboard exists and displays user data |
+| AUTH-02 | 01-02, 01-03 | Enterprise buyer can sign up/login with Google OAuth | ✓ SATISFIED | OAuth flow works, /dashboard exists, OAuth users get profile+enterprise created |
+| AUTH-03 | 01-02, 01-03 | Practitioner can apply with email/password (pending approval) | ✓ SATISFIED | signupPractitioner creates pending record, /portal/pending displays application status |
+| AUTH-04 | 01-03 | Admin can approve/reject practitioner applications | ✓ SATISFIED | Admin page lists pending applications, Approve/Reject buttons call server actions that update application_status |
 | AUTH-05 | 01-01 | User session persists across browser refresh | ✓ SATISFIED | Middleware refreshes session on every request |
-| AUTH-06 | 01-01 | Role-based access control enforces correct permissions per user type | ✓ SATISFIED | 13 RLS policies enforce role-based access at DB level |
+| AUTH-06 | 01-01 | Role-based access control enforces correct permissions per user type | ✓ SATISFIED | 13 RLS policies enforce DB-level access, layouts verify role before rendering |
 
-**Coverage:** 6/6 requirement IDs mapped, 2 satisfied, 3 partial (missing landing pages), 1 blocked (no admin UI)
+**Coverage:** 6/6 requirement IDs satisfied
 
 ### Anti-Patterns Found
 
-| File | Line | Pattern | Severity | Impact |
-|------|------|---------|----------|--------|
-| src/actions/auth.ts | 103 | redirect('/dashboard') | 🛑 Blocker | Enterprise signup redirects to non-existent route - users get 404 |
-| src/actions/auth.ts | 54 | redirect('/portal') | 🛑 Blocker | Practitioner login redirects to non-existent route - users get 404 |
-| src/actions/auth.ts | 149 | redirect('/portal/pending') | 🛑 Blocker | Practitioner signup redirects to non-existent route - users get 404 |
-| src/actions/auth.ts | 51 | redirect('/admin') | 🛑 Blocker | Admin login redirects to non-existent route - admins get 404 |
+No anti-patterns found. Intentional placeholders exist for future work:
 
-**Pattern:** All role-based redirects point to routes that don't exist. Users complete auth successfully but land on 404 pages.
+| File | Pattern | Severity | Impact |
+|------|---------|----------|--------|
+| src/app/dashboard/page.tsx | "Coming in Phase 3" placeholder text | ℹ️ Info | Documented future work for practitioner discovery (not a stub - clearly labeled) |
+| src/app/dashboard/page.tsx | "Coming in Phase 4" placeholder text | ℹ️ Info | Documented future work for team progress tracking (not a stub) |
+| src/app/portal/page.tsx | "Coming in Phase 2" placeholder text | ℹ️ Info | Documented future work for profile editing and availability (not a stub) |
+
+**Classification:** These are NOT stubs - they are intentional placeholders clearly labeled as future phase work. The phase goal "All user types can securely access the platform" is met. Users land on functional dashboards that display their real data, not 404 errors.
 
 ### Human Verification Required
 
-#### 1. Email/Password Signup Flow End-to-End
+#### 1. Enterprise Signup Flow End-to-End
 
-**Test:** Create enterprise account via /signup/enterprise, verify redirect works
-**Expected:** After form submit, user is redirected to /dashboard and sees a landing page (not 404)
-**Why human:** Requires running app with Supabase configured, testing full redirect flow
+**Test:** Create enterprise account via /signup/enterprise with email/password, verify redirect and dashboard display
+**Expected:** After form submit, user lands on /dashboard and sees personalized welcome message with company name
+**Why human:** Requires running app with Supabase configured, testing full redirect and data display flow
 
 #### 2. Google OAuth Flow End-to-End
 
-**Test:** Click "Continue with Google" on /login, complete OAuth flow, verify callback redirect
-**Expected:** After OAuth consent, user lands on role-appropriate dashboard (not 404)
+**Test:** Click "Continue with Google" on /login, complete OAuth flow, verify callback creates profile and redirects
+**Expected:** After OAuth consent, user lands on /dashboard with profile created (not 404)
 **Why human:** Requires Google OAuth provider configured in Supabase dashboard
 
-#### 3. Form Validation
+#### 3. Practitioner Application Flow
+
+**Test:** Submit practitioner application via /signup/practitioner, verify redirect to /portal/pending
+**Expected:** After application submit, practitioner lands on pending status page showing "Application Under Review" with application date
+**Why human:** Requires testing practitioner-specific redirect and status display
+
+#### 4. Admin Approval Workflow
+
+**Test:** Log in as admin, view /admin page, approve a pending practitioner, verify status changes
+**Expected:** Admin sees list of pending practitioners, clicking Approve updates application_status to 'approved', practitioner can now access /portal
+**Why human:** Requires admin account and testing status change propagation
+
+#### 5. Form Validation
 
 **Test:** Submit login form with invalid email (e.g., "notanemail"), verify error shows
 **Expected:** Red error text appears: "Please enter a valid email address"
 **Why human:** Client-side validation behavior
 
-#### 4. Session Persistence
+#### 6. Session Persistence
 
 **Test:** Log in, refresh browser, verify user stays logged in
 **Expected:** No redirect to login page after refresh
 **Why human:** Requires testing session cookie behavior across refresh
 
+#### 7. Role-Based Access Control
+
+**Test:** Log in as enterprise user, try to access /admin or /portal directly
+**Expected:** Redirected to /login (access denied)
+**Why human:** Requires testing layout-level role protection
+
 ### Gaps Summary
 
-**Critical blockers preventing phase goal achievement:**
+**No gaps remaining.** All 3 gaps from previous verification have been closed:
 
-1. **No destination routes for authenticated users** — All auth flows redirect to /dashboard, /portal, or /admin, but none of these routes exist. Users successfully create accounts and log in, but immediately hit 404 errors. This breaks the phase goal "All user types can securely access the platform."
+1. ✅ **Admin approval interface now exists** — /admin page displays pending practitioners with Approve/Reject buttons wired to server actions that update application_status
+2. ✅ **Enterprise dashboard route exists** — /dashboard displays personalized welcome message with company name fetched from database
+3. ✅ **Practitioner portal routes exist** — /portal and /portal/pending handle all application statuses (pending/approved/rejected)
 
-2. **No admin approval interface** — Success Criterion #4 "Admin can approve or reject practitioner applications" cannot be met. While the database schema supports approval (application_status field, RLS policies for admin updates), there is no UI or server action to invoke it. Practitioners can apply, but admins have no way to review or approve them.
-
-3. **Partial requirement satisfaction** — AUTH-01, AUTH-02, AUTH-03 are technically functional (database records created correctly) but users cannot complete the journey to a working interface. This violates the "access the platform" part of the phase goal.
-
-**Next steps to close gaps:**
-
-- Plan 01-03 should create placeholder dashboard/portal/admin pages (even basic "Welcome [role]" pages)
-- Plan 01-03 should add admin server action to update practitioner.application_status
-- Plan 01-03 should add basic admin page listing pending practitioners with approve/reject buttons
+**Phase goal achieved:** All user types can securely access the platform with role-appropriate permissions. Every auth redirect now lands on a functional page displaying user-specific data.
 
 ---
 
-_Verified: 2026-04-10T12:00:00Z_
+_Verified: 2026-04-10T18:30:00Z_
 _Verifier: Claude (gsd-verifier)_
