@@ -16,7 +16,7 @@ export interface Database {
         }
         Insert: {
           id: string
-          role: UserRole
+          role?: UserRole
           display_name?: string | null
           avatar_url?: string | null
           created_at?: string
@@ -30,6 +30,7 @@ export interface Database {
           created_at?: string
           updated_at?: string
         }
+        Relationships: []
       }
       enterprises: {
         Row: {
@@ -59,6 +60,15 @@ export interface Database {
           billing_email?: string | null
           created_at?: string
         }
+        Relationships: [
+          {
+            foreignKeyName: 'enterprises_user_id_fkey'
+            columns: ['user_id']
+            isOneToOne: true
+            referencedRelation: 'profiles'
+            referencedColumns: ['id']
+          }
+        ]
       }
       practitioners: {
         Row: {
@@ -112,6 +122,15 @@ export interface Database {
           rejection_reason?: string | null
           created_at?: string
         }
+        Relationships: [
+          {
+            foreignKeyName: 'practitioners_user_id_fkey'
+            columns: ['user_id']
+            isOneToOne: true
+            referencedRelation: 'profiles'
+            referencedColumns: ['id']
+          }
+        ]
       }
     }
     Views: Record<string, never>
@@ -121,5 +140,6 @@ export interface Database {
       application_status: ApplicationStatus
       practitioner_tier: PractitionerTier
     }
+    CompositeTypes: Record<string, never>
   }
 }
