@@ -1,6 +1,14 @@
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { getAvailability } from '@/actions/availability'
+import { redirect } from 'next/navigation'
+import { AvailabilityCalendar } from '@/components/portal/availability-calendar'
 
-export default function AvailabilityPage() {
+export default async function AvailabilityPage() {
+  const result = await getAvailability()
+
+  if (!result.success || !result.data) {
+    redirect('/portal')
+  }
+
   return (
     <div className="space-y-6">
       <div>
@@ -10,19 +18,11 @@ export default function AvailabilityPage() {
         </p>
       </div>
 
-      <Card>
-        <CardHeader>
-          <CardTitle>Weekly Schedule</CardTitle>
-          <CardDescription>
-            Define when you're available for sessions
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <p className="text-muted-foreground">
-            Availability calendar coming soon.
-          </p>
-        </CardContent>
-      </Card>
+      <AvailabilityCalendar
+        initialRules={result.data.rules}
+        initialExceptions={result.data.exceptions}
+        practitionerId={result.data.practitionerId}
+      />
     </div>
   )
 }
