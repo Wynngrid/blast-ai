@@ -1,12 +1,13 @@
 import Link from 'next/link'
 import { Card, CardContent, CardHeader } from '@/components/ui/card'
 import { Avatar, AvatarFallback } from '@/components/ui/avatar'
-import { Button } from '@/components/ui/button'
+import { buttonVariants } from '@/components/ui/button'
 import { TierBadge } from './tier-badge'
 import { StatsDisplay, StatsPlaceholder } from './stats-display'
 import { SPECIALIZATION_CATEGORIES } from '@/lib/constants/specializations'
 import type { PractitionerTier } from '@/types/database'
 import { ArrowRight } from 'lucide-react'
+import { cn } from '@/lib/utils'
 
 interface ProfileCardProps {
   practitioner: {
@@ -72,12 +73,16 @@ export function ProfileCard({ practitioner }: ProfileCardProps) {
               <span className="text-sm font-normal text-muted-foreground">/hr</span>
             </p>
           )}
-          <Button asChild variant="ghost" size="sm" className="group-hover:bg-primary group-hover:text-primary-foreground">
-            <Link href={`/practitioners/${practitioner.id}`}>
-              View Profile
-              <ArrowRight className="h-4 w-4 ml-1" />
-            </Link>
-          </Button>
+          <Link
+            href={`/practitioners/${practitioner.id}`}
+            className={cn(
+              buttonVariants({ variant: 'ghost', size: 'sm' }),
+              'group-hover:bg-primary group-hover:text-primary-foreground'
+            )}
+          >
+            View Profile
+            <ArrowRight className="h-4 w-4 ml-1" />
+          </Link>
         </div>
       </CardContent>
     </Card>

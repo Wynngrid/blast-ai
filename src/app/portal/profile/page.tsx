@@ -2,13 +2,14 @@ import Link from 'next/link'
 import { getProfile } from '@/actions/profile'
 import { redirect } from 'next/navigation'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { Button } from '@/components/ui/button'
+import { buttonVariants } from '@/components/ui/button'
 import { Avatar, AvatarFallback } from '@/components/ui/avatar'
 import { Badge } from '@/components/ui/badge'
 import { TierBadge } from '@/components/portal/tier-badge'
 import { StatsPlaceholder } from '@/components/portal/stats-display'
 import { SPECIALIZATION_CATEGORIES } from '@/lib/constants/specializations'
 import { ExternalLink, Pencil, Eye, AlertCircle } from 'lucide-react'
+import { cn } from '@/lib/utils'
 
 export default async function ProfilePage() {
   const result = await getProfile()
@@ -49,18 +50,21 @@ export default async function ProfilePage() {
           </p>
         </div>
         <div className="flex gap-2">
-          <Button asChild variant="outline">
-            <Link href={`/practitioners/${practitioner.id}`} target="_blank">
-              <Eye className="h-4 w-4 mr-2" />
-              Preview Public Profile
-            </Link>
-          </Button>
-          <Button asChild>
-            <Link href="/portal/profile/edit">
-              <Pencil className="h-4 w-4 mr-2" />
-              Edit Profile
-            </Link>
-          </Button>
+          <Link
+            href={`/practitioners/${practitioner.id}`}
+            target="_blank"
+            className={cn(buttonVariants({ variant: 'outline' }))}
+          >
+            <Eye className="h-4 w-4 mr-2" />
+            Preview Public Profile
+          </Link>
+          <Link
+            href="/portal/profile/edit"
+            className={cn(buttonVariants())}
+          >
+            <Pencil className="h-4 w-4 mr-2" />
+            Edit Profile
+          </Link>
         </div>
       </div>
 
@@ -75,9 +79,12 @@ export default async function ProfilePage() {
                 Complete your profile to appear in enterprise searches.
               </p>
             </div>
-            <Button asChild variant="outline" size="sm" className="ml-auto">
-              <Link href="/portal/profile/edit">Complete Profile</Link>
-            </Button>
+            <Link
+              href="/portal/profile/edit"
+              className={cn(buttonVariants({ variant: 'outline', size: 'sm' }), 'ml-auto')}
+            >
+              Complete Profile
+            </Link>
           </CardContent>
         </Card>
       )}
