@@ -1,6 +1,7 @@
 import { createClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { Calendar, TrendingUp, Star } from 'lucide-react'
 
 export default async function PortalPage() {
   const supabase = await createClient()
@@ -8,16 +9,14 @@ export default async function PortalPage() {
 
   const { data: practitioner } = await supabase
     .from('practitioners')
-    .select('full_name, application_status, bio, specializations')
+    .select('full_name, application_status, bio, specializations, tier, hourly_rate')
     .eq('user_id', user!.id)
     .single()
 
-  // If still pending, redirect to pending page
   if (practitioner?.application_status === 'pending') {
     redirect('/portal/pending')
   }
 
-  // If rejected, show rejection message
   if (practitioner?.application_status === 'rejected') {
     return (
       <div className="space-y-6">
@@ -38,62 +37,70 @@ export default async function PortalPage() {
     )
   }
 
+  // Approved practitioner view per D-10
   return (
     <div className="space-y-6">
       <div>
         <h2 className="text-2xl font-bold tracking-tight">
-          Welcome, {practitioner?.full_name || 'Practitioner'}!
+          Welcome back!
         </h2>
-        <p className="text-gray-600">
-          Your application has been approved. Start managing your sessions.
+        <p className="text-muted-foreground">
+          Here's what's happening with your sessions.
         </p>
       </div>
 
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-        <Card>
-          <CardHeader>
-            <CardTitle>Your Profile</CardTitle>
-            <CardDescription>
-              Manage your practitioner profile
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <p className="text-sm text-gray-500">
-              {practitioner?.specializations?.join(', ') || 'No specializations set'}
-            </p>
-            <p className="text-xs text-gray-400 mt-2">
-              Profile editing coming in Phase 2
-            </p>
-          </CardContent>
-        </Card>
+      <div className="grid gap-6 lg:grid-cols-3">
+        {/* Upcoming Sessions - Main Area per D-10 */}
+        <div className="lg:col-span-2 space-y-4">
+          <h3 className="font-semibold">Upcoming Sessions</h3>
+          <Card>
+            <CardContent className="pt-6">
+              <div className="flex flex-col items-center justify-center py-8 text-center">
+                <Calendar className="h-12 w-12 text-muted-foreground/50 mb-4" />
+                <p className="text-muted-foreground">No upcoming sessions</p>
+                <p className="text-sm text-muted-foreground/70 mt-1">
+                  Sessions booked by enterprises will appear here
+                </p>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
 
-        <Card>
-          <CardHeader>
-            <CardTitle>Availability</CardTitle>
-            <CardDescription>
-              Set your available time slots
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <p className="text-sm text-gray-500">
-              Coming in Phase 2
-            </p>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader>
-            <CardTitle>Upcoming Sessions</CardTitle>
-            <CardDescription>
-              View your scheduled sessions
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <p className="text-sm text-gray-500">
-              No sessions scheduled yet
-            </p>
-          </CardContent>
-        </Card>
+        {/* Stats Sidebar per D-10 */}
+        <div className="space-y-4">
+          <h3 className="font-semibold">Your Stats</h3>
+          <Card>
+            <CardContent className="pt-6 space-y-4">
+              <div className="flex items-center gap-3">
+                <div className="rounded-full bg-muted p-2">
+                  <Calendar className="h-4 w-4" />
+                </div>
+                <div>
+                  <p className="text-2xl font-bold">0</p>
+                  <p className="text-xs text-muted-foreground">Sessions completed</p>
+                </div>
+              </div>
+              <div className="flex items-center gap-3">
+                <div className="rounded-full bg-muted p-2">
+                  <Star className="h-4 w-4" />
+                </div>
+                <div>
+                  <p className="text-2xl font-bold">--</p>
+                  <p className="text-xs text-muted-foreground">NPS score</p>
+                </div>
+              </div>
+              <div className="flex items-center gap-3">
+                <div className="rounded-full bg-muted p-2">
+                  <TrendingUp className="h-4 w-4" />
+                </div>
+                <div>
+                  <p className="text-2xl font-bold">$0</p>
+                  <p className="text-xs text-muted-foreground">Earnings this month</p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
       </div>
     </div>
   )
