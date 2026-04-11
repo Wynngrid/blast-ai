@@ -132,6 +132,129 @@ export interface Database {
           }
         ]
       }
+      availability_rules: {
+        Row: {
+          id: string
+          practitioner_id: string
+          day_of_week: number
+          start_time: string
+          end_time: string
+          timezone: string
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          practitioner_id: string
+          day_of_week: number
+          start_time: string
+          end_time: string
+          timezone?: string
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          practitioner_id?: string
+          day_of_week?: number
+          start_time?: string
+          end_time?: string
+          timezone?: string
+          created_at?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: 'availability_rules_practitioner_id_fkey'
+            columns: ['practitioner_id']
+            isOneToOne: false
+            referencedRelation: 'practitioners'
+            referencedColumns: ['id']
+          }
+        ]
+      }
+      availability_exceptions: {
+        Row: {
+          id: string
+          practitioner_id: string
+          exception_date: string
+          is_blocked: boolean
+          start_time: string | null
+          end_time: string | null
+          reason: string | null
+          created_at: string
+        }
+        Insert: {
+          id?: string
+          practitioner_id: string
+          exception_date: string
+          is_blocked?: boolean
+          start_time?: string | null
+          end_time?: string | null
+          reason?: string | null
+          created_at?: string
+        }
+        Update: {
+          id?: string
+          practitioner_id?: string
+          exception_date?: string
+          is_blocked?: boolean
+          start_time?: string | null
+          end_time?: string | null
+          reason?: string | null
+          created_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: 'availability_exceptions_practitioner_id_fkey'
+            columns: ['practitioner_id']
+            isOneToOne: false
+            referencedRelation: 'practitioners'
+            referencedColumns: ['id']
+          }
+        ]
+      }
+      portfolio_items: {
+        Row: {
+          id: string
+          practitioner_id: string
+          url: string
+          title: string | null
+          description: string | null
+          thumbnail_url: string | null
+          display_order: number
+          created_at: string
+        }
+        Insert: {
+          id?: string
+          practitioner_id: string
+          url: string
+          title?: string | null
+          description?: string | null
+          thumbnail_url?: string | null
+          display_order?: number
+          created_at?: string
+        }
+        Update: {
+          id?: string
+          practitioner_id?: string
+          url?: string
+          title?: string | null
+          description?: string | null
+          thumbnail_url?: string | null
+          display_order?: number
+          created_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: 'portfolio_items_practitioner_id_fkey'
+            columns: ['practitioner_id']
+            isOneToOne: false
+            referencedRelation: 'practitioners'
+            referencedColumns: ['id']
+          }
+        ]
+      }
     }
     Views: Record<string, never>
     Functions: Record<string, never>
