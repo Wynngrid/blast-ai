@@ -1,5 +1,8 @@
 import { redirect } from 'next/navigation'
 import { createClient } from '@/lib/supabase/server'
+import { SidebarProvider, SidebarInset, SidebarTrigger } from '@/components/ui/sidebar'
+import { PortalSidebar } from '@/components/portal/portal-sidebar'
+import { Separator } from '@/components/ui/separator'
 
 export default async function PortalLayout({
   children,
@@ -13,28 +16,30 @@ export default async function PortalLayout({
     redirect('/login')
   }
 
-  // Verify user is practitioner role
-  const { data: profile } = await supabase
-    .from('profiles')
-    .select('role')
-    .eq('id', user.id)
-    .single()
+  // Verify user is practitioner role using user metadata
+  const role = user.user_metadata?.role
 
-  if (profile?.role !== 'practitioner') {
-    redirect('/login')
+  if (role !== 'practitioner') {
+    if (role === 'admin') {
+      redirect('/admin')
+    } else {
+      redirect('/dashboard')
+    }
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <header className="bg-white border-b">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
-          <h1 className="text-xl font-bold">BLAST AI</h1>
-          <span className="text-sm text-gray-600">Practitioner Portal</span>
-        </div>
-      </header>
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {children}
-      </main>
-    </div>
+    <SidebarProvider>
+      <PortalSidebar />
+      <SidebarInset>
+        <header className="flex h-14 items-center gap-4 border-b bg-background px-6">
+          <SidebarTrigger className="-ml-2" />
+          <Separator orientation="vertical" className="h-6" />
+          <span className="text-sm text-muted-foreground">Practitioner Portal</span>
+        </header>
+        <main className="flex-1 p-6">
+          {children}
+        </main>
+      </SidebarInset>
+    </SidebarProvider>
   )
 }
