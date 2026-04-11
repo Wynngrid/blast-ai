@@ -36,10 +36,10 @@ Requirements for April 18, 2026 Masters' Union AI Summit launch.
 
 ### Availability & Scheduling
 
-- [ ] **AVAIL-01**: Practitioner can set available time slots
-- [ ] **AVAIL-02**: Practitioner can block specific dates/times
-- [ ] **AVAIL-03**: Availability calendar displays in enterprise's local timezone
-- [ ] **AVAIL-04**: Booked slots are automatically removed from availability
+- [x] **AVAIL-01**: Practitioner can set available time slots
+- [x] **AVAIL-02**: Practitioner can block specific dates/times
+- [x] **AVAIL-03**: Availability calendar displays in enterprise's local timezone
+- [x] **AVAIL-04**: Booked slots are automatically removed from availability
 
 ### Booking Flow
 
@@ -68,7 +68,7 @@ Requirements for April 18, 2026 Masters' Union AI Summit launch.
 
 ### Mentor Portal
 
-- [ ] **MENT-01**: Practitioner can manage availability (toggle time blocks)
+- [x] **MENT-01**: Practitioner can manage availability (toggle time blocks)
 - [ ] **MENT-02**: Practitioner can view upcoming sessions with session briefs
 - [ ] **MENT-03**: Practitioner can track earnings and payout status
 - [ ] **MENT-04**: Practitioner can see ratings and reviews received
@@ -155,11 +155,11 @@ Which phases cover which requirements. Updated during roadmap creation.
 | PROF-04 | Phase 2 | Pending |
 | PROF-05 | Phase 2 | Pending |
 | PROF-06 | Phase 2 | Pending |
-| AVAIL-01 | Phase 2 | Pending |
-| AVAIL-02 | Phase 2 | Pending |
-| AVAIL-03 | Phase 2 | Pending |
-| AVAIL-04 | Phase 2 | Pending |
-| MENT-01 | Phase 2 | Pending |
+| AVAIL-01 | Phase 2 | Complete |
+| AVAIL-02 | Phase 2 | Complete |
+| AVAIL-03 | Phase 2 | Complete |
+| AVAIL-04 | Phase 2 | Complete |
+| MENT-01 | Phase 2 | Complete |
 | MENT-02 | Phase 2 | Pending |
 | DISC-01 | Phase 3 | Pending |
 | DISC-02 | Phase 3 | Pending |

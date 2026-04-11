@@ -53,10 +53,10 @@ Plans:
   - **Anonymous-by-default**: Practitioner enters real name (for internal/payment purposes), but public-facing profile shows specialization, tier, bio, portfolio, stats — NO name. Name only reveals after booking is confirmed. This is core design — bake into PROF-01 from the start.
 
 Plans:
-- [ ] 02-01-PLAN.md — Database schema (availability/portfolio tables), package installation, specialization taxonomy
-- [ ] 02-02-PLAN.md — Portal sidebar navigation with Linear-style layout
-- [ ] 02-03-PLAN.md — Profile wizard (4 steps: Bio, Skills, Portfolio, Rates) with validation
-- [ ] 02-04-PLAN.md — Availability calendar with FullCalendar, recurring rules, timezone handling
+- [x] 02-01-PLAN.md — Database schema (availability/portfolio tables), package installation, specialization taxonomy
+- [x] 02-02-PLAN.md — Portal sidebar navigation with Linear-style layout
+- [x] 02-03-PLAN.md — Profile wizard (4 steps: Bio, Skills, Portfolio, Rates) with validation
+- [x] 02-04-PLAN.md — Availability calendar with FullCalendar, recurring rules, timezone handling
 - [ ] 02-05-PLAN.md — Public profile display, TierBadge, StatsDisplay, profile preview
 
 ### Phase 3: Discovery, Booking & Payments
