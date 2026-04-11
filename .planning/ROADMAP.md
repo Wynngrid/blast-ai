@@ -57,7 +57,7 @@ Plans:
 - [x] 02-02-PLAN.md — Portal sidebar navigation with Linear-style layout
 - [x] 02-03-PLAN.md — Profile wizard (4 steps: Bio, Skills, Portfolio, Rates) with validation
 - [x] 02-04-PLAN.md — Availability calendar with FullCalendar, recurring rules, timezone handling
-- [ ] 02-05-PLAN.md — Public profile display, TierBadge, StatsDisplay, profile preview
+- [x] 02-05-PLAN.md — Public profile display, TierBadge, StatsDisplay, profile preview
 
 ### Phase 3: Discovery, Booking & Payments
 **Goal**: Enterprise can find practitioners, book sessions, and pay through the platform
