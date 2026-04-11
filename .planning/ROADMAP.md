@@ -12,7 +12,7 @@ BLAST AI delivers a vetted AI practitioner marketplace in four phases: establish
 
 Decimal phases appear between their surrounding integers in numeric order.
 
-- [ ] **Phase 1: Foundation & Authentication** - Supabase setup, RLS on all tables, auth for all user types, RBAC
+- [x] **Phase 1: Foundation & Authentication** - Supabase setup, RLS on all tables, auth for all user types, RBAC
 - [ ] **Phase 2: Practitioner Supply** - Profiles, availability calendar, basic mentor portal, admin approval
 - [ ] **Phase 3: Discovery, Booking & Payments** - Search/browse, booking flow, Razorpay payments, notifications
 - [ ] **Phase 4: Enterprise Dashboard & Trust** - Team management, budget tracking, reviews, ratings
@@ -47,15 +47,17 @@ Plans:
   3. Availability calendar displays correctly in viewer's local timezone
   4. Practitioner can view their upcoming sessions with session briefs
   5. Practitioner profile displays stats placeholder (sessions: 0, ready for data)
-**Plans**: TBD
+**Plans**: 5 plans
 **UI hint**: yes
 **Implementation Notes**:
   - **Anonymous-by-default**: Practitioner enters real name (for internal/payment purposes), but public-facing profile shows specialization, tier, bio, portfolio, stats — NO name. Name only reveals after booking is confirmed. This is core design — bake into PROF-01 from the start.
 
 Plans:
-- [ ] 02-01: TBD
-- [ ] 02-02: TBD
-- [ ] 02-03: TBD
+- [ ] 02-01-PLAN.md — Database schema (availability/portfolio tables), package installation, specialization taxonomy
+- [ ] 02-02-PLAN.md — Portal sidebar navigation with Linear-style layout
+- [ ] 02-03-PLAN.md — Profile wizard (4 steps: Bio, Skills, Portfolio, Rates) with validation
+- [ ] 02-04-PLAN.md — Availability calendar with FullCalendar, recurring rules, timezone handling
+- [ ] 02-05-PLAN.md — Public profile display, TierBadge, StatsDisplay, profile preview
 
 ### Phase 3: Discovery, Booking & Payments
 **Goal**: Enterprise can find practitioners, book sessions, and pay through the platform
@@ -108,8 +110,8 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Foundation & Authentication | 0/3 | In progress | - |
-| 2. Practitioner Supply | 0/3 | Not started | - |
+| 1. Foundation & Authentication | 3/3 | Complete | 2026-04-10 |
+| 2. Practitioner Supply | 0/5 | Not started | - |
 | 3. Discovery, Booking & Payments | 0/3 | Not started | - |
 | 4. Enterprise Dashboard & Trust | 0/2 | Not started | - |
 
