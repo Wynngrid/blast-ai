@@ -42,14 +42,12 @@ export function PortalSidebar() {
             {navItems.map((item) => (
               <SidebarMenuItem key={item.href}>
                 <SidebarMenuButton
-                  asChild
+                  render={<Link href={item.href} />}
                   isActive={pathname === item.href ||
                     (item.href !== '/portal' && pathname.startsWith(item.href))}
                 >
-                  <Link href={item.href}>
-                    <item.icon className="h-4 w-4" />
-                    <span>{item.label}</span>
-                  </Link>
+                  <item.icon className="h-4 w-4" />
+                  <span>{item.label}</span>
                 </SidebarMenuButton>
               </SidebarMenuItem>
             ))}

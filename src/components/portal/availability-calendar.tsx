@@ -239,7 +239,7 @@ export function AvailabilityCalendar({
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <Select value={timezone} onValueChange={setTimezone}>
+            <Select value={timezone} onValueChange={(value) => value && setTimezone(value)}>
               <SelectTrigger>
                 <SelectValue />
               </SelectTrigger>
@@ -271,7 +271,7 @@ export function AvailabilityCalendar({
               <Select
                 value={newRule.dayOfWeek.toString()}
                 onValueChange={(v) =>
-                  setNewRule({ ...newRule, dayOfWeek: parseInt(v) })
+                  v && setNewRule({ ...newRule, dayOfWeek: parseInt(v) })
                 }
               >
                 <SelectTrigger className="text-xs">
@@ -287,7 +287,7 @@ export function AvailabilityCalendar({
               </Select>
               <Select
                 value={newRule.startTime}
-                onValueChange={(v) => setNewRule({ ...newRule, startTime: v })}
+                onValueChange={(v) => v && setNewRule({ ...newRule, startTime: v })}
               >
                 <SelectTrigger className="text-xs">
                   <SelectValue />
@@ -302,7 +302,7 @@ export function AvailabilityCalendar({
               </Select>
               <Select
                 value={newRule.endTime}
-                onValueChange={(v) => setNewRule({ ...newRule, endTime: v })}
+                onValueChange={(v) => v && setNewRule({ ...newRule, endTime: v })}
               >
                 <SelectTrigger className="text-xs">
                   <SelectValue />
