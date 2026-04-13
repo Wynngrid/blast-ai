@@ -28,17 +28,27 @@ Enterprise can find practitioners, book sessions, and pay through the platform. 
 - **D-10:** 24-hour cancellation window — Full refund if cancelled 24+ hours before session. No refund within 24 hours.
 - **D-11:** Rescheduling supported at MVP — Enterprise can reschedule if done 24+ hours before. Uses existing availability slots.
 
-### Payment Integration
-- **D-12:** Embedded Razorpay checkout — Popup/embedded form on site. User never leaves BLAST AI domain.
-- **D-13:** Commission calculated at booking — 30% fixed commission calculated when booking confirmed. Stored per session. Shown transparently in practitioner earnings.
-- **D-14:** Manual payout request — Practitioner requests payout when balance reaches ₹5,000 threshold. Admin approves.
-- **D-15:** Full analytics earnings dashboard — Current balance, pending payouts, transaction history (each session with gross, commission, net), monthly trend chart, revenue by session type breakdown.
-- **D-16:** Minimum payout threshold: ₹5,000 (~$60)
+### Payment Integration — Coin System
+- **D-12:** Platform currency: BLAST Coins — 1 coin = $10 (~₹830). Enterprises buy coins, practitioners earn money.
+- **D-13:** Two-sided visibility model:
+  - **Enterprises see coins** — "Session costs 12 coins" (includes 30% commission baked in)
+  - **Practitioners see money** — "You earned ₹7,000" (net after commission, never see coins or commission %)
+- **D-14:** Target session pricing: ~₹10,000 average (~12 coins). Platform keeps ₹3,000 (30%), practitioner gets ₹7,000.
+- **D-15:** Bulk coin purchases with tiered discounts:
+  - 12-49 coins: No discount (base rate)
+  - 50-99 coins: 5% off
+  - 100-249 coins: 10% off
+  - 250+ coins: Custom enterprise pricing
+- **D-16:** Coin expiration: 12 months from purchase date. Standard enterprise contract cycle.
+- **D-17:** Minimum purchase: 12 coins ($120/₹10k) — one session worth. Low barrier for pilots.
+- **D-18:** Embedded Razorpay checkout — Popup/embedded form for coin purchases. User never leaves BLAST AI domain.
+- **D-19:** Manual payout request — Practitioner requests payout when balance reaches ₹5,000 threshold. Admin approves.
+- **D-20:** Full analytics earnings dashboard — Current balance (in ₹), pending payouts, transaction history (each session showing money earned, NOT coins or commission), monthly trend chart, revenue breakdown.
 
 ### Notifications
-- **D-17:** Email provider: Resend — Developer-friendly, React Email templates, Server Actions integration.
-- **D-18:** Full notification set — Booking confirmation (both parties), practitioner new booking alert, 24-hour reminder (both parties). Per NOTF-01/02/03.
-- **D-19:** Minimal branded email templates — Clean, text-focused with brand color accent (#D97757). Logo, key info, CTA button. Linear-style aesthetic.
+- **D-21:** Email provider: Resend — Developer-friendly, React Email templates, Server Actions integration.
+- **D-22:** Full notification set — Booking confirmation (both parties), practitioner new booking alert, 24-hour reminder (both parties). Per NOTF-01/02/03.
+- **D-23:** Minimal branded email templates — Clean, text-focused with brand color accent (#D97757). Logo, key info, CTA button. Linear-style aesthetic.
 
 ### Claude's Discretion
 - Discovery card grid exact layout and responsive breakpoints
