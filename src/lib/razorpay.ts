@@ -20,7 +20,7 @@ export function getRazorpay(): Razorpay {
 // Export default instance for convenience
 export const razorpay = new Proxy({} as Razorpay, {
   get(_, prop) {
-    return (getRazorpay() as Record<string, unknown>)[prop as string]
+    return (getRazorpay() as unknown as Record<string, unknown>)[prop as string]
   },
 })
 

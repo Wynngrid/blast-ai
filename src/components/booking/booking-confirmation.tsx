@@ -231,12 +231,15 @@ export function BookingConfirmation({ booking, practitioner }: BookingConfirmati
           Download Calendar Invite
         </Button>
         {booking.meet_link && (
-          <Button asChild>
-            <a href={booking.meet_link} target="_blank" rel="noopener noreferrer">
-              <Video className="h-4 w-4 mr-2" />
-              Open Google Meet
-            </a>
-          </Button>
+          <a
+            href={booking.meet_link}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex shrink-0 items-center justify-center rounded-lg bg-primary text-primary-foreground text-sm font-medium h-8 gap-1.5 px-2.5 hover:bg-primary/80 transition-all"
+          >
+            <Video className="h-4 w-4 mr-2" />
+            Open Google Meet
+          </a>
         )}
       </div>
     </div>

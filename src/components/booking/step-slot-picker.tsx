@@ -112,7 +112,7 @@ export function StepSlotPicker({ rules, exceptions, bookedSlots }: StepSlotPicke
       {/* Timezone selector */}
       <div className="space-y-2">
         <Label>Your timezone</Label>
-        <Select value={timezone} onValueChange={setTimezone}>
+        <Select value={timezone} onValueChange={(value) => value && setTimezone(value)}>
           <SelectTrigger className="w-[280px]">
             <SelectValue />
           </SelectTrigger>

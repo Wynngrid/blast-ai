@@ -7,6 +7,7 @@ import { spendCoins } from '@/actions/coins'
 import { createBookingSchema, type CreateBookingInput } from '@/lib/validations/booking'
 import { getSessionCoinCost, calculatePractitionerEarnings } from '@/lib/constants/coins'
 import { addMinutes, parseISO } from 'date-fns'
+import type { BookingStatus } from '@/types/database'
 
 export type BookingResult<T = void> = {
   success: boolean
@@ -122,7 +123,7 @@ export async function createBooking(
   })
 
   // Update booking with meet link and confirm
-  const updateData: { status: string; meet_link?: string; calendar_event_id?: string } = {
+  const updateData: { status: BookingStatus; meet_link?: string; calendar_event_id?: string } = {
     status: 'confirmed',
   }
 

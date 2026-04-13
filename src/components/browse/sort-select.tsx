@@ -29,7 +29,7 @@ export function SortSelect() {
   const [sort, setSort] = useSortOption()
 
   return (
-    <Select value={sort} onValueChange={setSort}>
+    <Select value={sort} onValueChange={(value) => value && setSort(value as typeof SORT_OPTIONS[number])}>
       <SelectTrigger className="w-[180px]">
         <SelectValue placeholder="Sort by" />
       </SelectTrigger>
