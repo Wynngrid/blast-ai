@@ -13,7 +13,7 @@ BLAST AI delivers a vetted AI practitioner marketplace in four phases: establish
 Decimal phases appear between their surrounding integers in numeric order.
 
 - [x] **Phase 1: Foundation & Authentication** - Supabase setup, RLS on all tables, auth for all user types, RBAC
-- [ ] **Phase 2: Practitioner Supply** - Profiles, availability calendar, basic mentor portal, admin approval
+- [x] **Phase 2: Practitioner Supply** - Profiles, availability calendar, basic mentor portal, admin approval
 - [ ] **Phase 3: Discovery, Booking & Payments** - Search/browse, booking flow, Razorpay payments, notifications
 - [ ] **Phase 4: Enterprise Dashboard & Trust** - Team management, budget tracking, reviews, ratings
 
@@ -71,16 +71,21 @@ Plans:
   5. Payment collected via Razorpay before session is confirmed
   6. Practitioner sees earnings in portal with commission calculated
   7. Both parties receive email confirmation and 24-hour reminder
-**Plans**: TBD
+**Plans**: 7 plans
 **UI hint**: yes
 **Implementation Notes**:
   - **Default sort**: Search results default to "relevance" (specialization match + tier + NPS), NOT "newest" or alphabetical
   - **Mandatory brief**: Session brief (BOOK-02/BOOK-03) is REQUIRED, not optional. This is what makes sessions 10x better than a cold Zoom call. If enterprise doesn't submit a brief, practitioner can't prepare. Make it a required field with validation.
+  - **BLAST Coins**: Platform uses coin-based currency (1 coin = $10). Enterprises buy coins, see costs in coins. Practitioners see earnings in INR only, never coins or commission percentages.
 
 Plans:
-- [ ] 03-01: TBD
-- [ ] 03-02: TBD
-- [ ] 03-03: TBD
+- [ ] 03-01-PLAN.md — Database schema, TypeScript types, coin constants, package installation
+- [ ] 03-02-PLAN.md — Discovery browse page with filters (specialization, industry, tier), sorting, practitioner cards
+- [ ] 03-03-PLAN.md — Booking wizard core: session type selection, structured brief form, slot picker
+- [ ] 03-04-PLAN.md — Coin payment system: Razorpay integration, coin purchase, balance, spending
+- [ ] 03-05-PLAN.md — Booking completion: Google Meet link generation, confirmation page, .ics download
+- [ ] 03-06-PLAN.md — Practitioner earnings dashboard, payout requests, sessions view with briefs
+- [ ] 03-07-PLAN.md — Email notifications: booking confirmation, new booking alert, 24-hour reminders
 
 ### Phase 4: Enterprise Dashboard & Trust
 **Goal**: Enterprises can manage team sessions and practitioners accumulate trust signals
@@ -111,8 +116,8 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Foundation & Authentication | 3/3 | Complete | 2026-04-10 |
-| 2. Practitioner Supply | 0/5 | Not started | - |
-| 3. Discovery, Booking & Payments | 0/3 | Not started | - |
+| 2. Practitioner Supply | 5/5 | Complete | 2026-04-12 |
+| 3. Discovery, Booking & Payments | 0/7 | Not started | - |
 | 4. Enterprise Dashboard & Trust | 0/2 | Not started | - |
 
 ---
