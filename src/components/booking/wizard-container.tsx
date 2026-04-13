@@ -1,11 +1,15 @@
 'use client'
 
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
+import { useRouter } from 'next/navigation'
 import { Progress } from '@/components/ui/progress'
 import { useBookingWizard, BOOKING_WIZARD_STEPS, type WizardStep } from '@/lib/stores/booking-wizard'
 import { StepSessionType } from './step-session-type'
 import { StepBrief } from './step-brief'
 import { StepSlotPicker } from './step-slot-picker'
+import { StepPayment } from './step-payment'
+import { createBooking } from '@/actions/booking'
+import { toast } from 'sonner'
 import type { Database } from '@/types/database'
 
 type AvailabilityRule = Database['public']['Tables']['availability_rules']['Row']
@@ -13,6 +17,7 @@ type AvailabilityException = Database['public']['Tables']['availability_exceptio
 
 interface WizardContainerProps {
   practitionerId: string
+  practitionerHourlyRate: number
   rules: AvailabilityRule[]
   exceptions: AvailabilityException[]
   bookedSlots: { start: string; end: string }[]
@@ -20,11 +25,14 @@ interface WizardContainerProps {
 
 export function WizardContainer({
   practitionerId,
+  practitionerHourlyRate,
   rules,
   exceptions,
   bookedSlots,
 }: WizardContainerProps) {
-  const { step, setPractitionerId, reset } = useBookingWizard()
+  const router = useRouter()
+  const { step, setPractitionerId, reset, sessionDuration, brief, selectedSlot, timezone } = useBookingWizard()
+  const [processing, setProcessing] = useState(false)
 
   // Set practitioner ID on mount
   useEffect(() => {
@@ -32,6 +40,35 @@ export function WizardContainer({
     // Reset wizard when unmounting (navigating away)
     return () => reset()
   }, [practitionerId, setPractitionerId, reset])
+
+  const handleBookingComplete = async () => {
+    if (!sessionDuration || !brief || !selectedSlot) {
+      toast.error('Missing booking information')
+      return
+    }
+
+    setProcessing(true)
+    try {
+      const result = await createBooking({
+        practitionerId,
+        sessionDuration,
+        brief,
+        slot: selectedSlot,
+        timezone,
+      })
+
+      if (!result.success || !result.data) {
+        throw new Error(result.error || 'Booking failed')
+      }
+
+      // Redirect to confirmation page
+      router.push(`/booking/${result.data.bookingId}/confirmation`)
+    } catch (error) {
+      toast.error(error instanceof Error ? error.message : 'Booking failed')
+    } finally {
+      setProcessing(false)
+    }
+  }
 
   const progressValue = (step / 5) * 100
 
@@ -57,13 +94,16 @@ export function WizardContainer({
         />
       )}
       {step === 4 && (
-        <div className="text-center py-12">
-          <p className="text-muted-foreground">Payment step - implemented in Plan 04</p>
-        </div>
+        <StepPayment
+          practitionerHourlyRate={practitionerHourlyRate}
+          onBookingComplete={handleBookingComplete}
+        />
       )}
       {step === 5 && (
         <div className="text-center py-12">
-          <p className="text-muted-foreground">Confirmation step - implemented in Plan 05</p>
+          <p className="text-muted-foreground">
+            {processing ? 'Processing your booking...' : 'Redirecting to confirmation...'}
+          </p>
         </div>
       )}
     </div>

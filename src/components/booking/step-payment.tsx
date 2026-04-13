@@ -5,14 +5,14 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Alert, AlertDescription } from '@/components/ui/alert'
 import { useBookingWizard } from '@/lib/stores/booking-wizard'
-import { getAvailableBalance, spendCoins } from '@/actions/coins'
+import { getAvailableBalance } from '@/actions/coins'
 import { getSessionCoinCost, COIN_VALUE_INR } from '@/lib/constants/coins'
 import { AlertTriangle, CheckCircle, Coins } from 'lucide-react'
 import Link from 'next/link'
 
 interface StepPaymentProps {
   practitionerHourlyRate: number
-  onBookingComplete: (bookingId: string) => void
+  onBookingComplete: () => void
 }
 
 export function StepPayment({ practitionerHourlyRate, onBookingComplete }: StepPaymentProps) {
@@ -52,23 +52,14 @@ export function StepPayment({ practitionerHourlyRate, onBookingComplete }: StepP
     setError(null)
 
     try {
-      // Create booking first (in Plan 05, here we simulate)
-      // For now, create a mock booking ID - actual creation in Plan 05
-      const mockBookingId = `booking_${Date.now()}`
-
-      // Spend coins
-      const result = await spendCoins(mockBookingId, coinsRequired)
-
-      if (!result.success) {
-        throw new Error(result.error || 'Failed to process payment')
-      }
-
-      onBookingComplete(mockBookingId)
+      // Booking creation and coin spending handled by parent via onBookingComplete
+      // This triggers createBooking in wizard-container which handles both
+      await onBookingComplete()
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Payment failed')
-    } finally {
       setProcessing(false)
     }
+    // Don't setProcessing(false) on success - we're redirecting
   }
 
   if (loading) {

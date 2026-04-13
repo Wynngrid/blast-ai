@@ -103,6 +103,7 @@ export default async function BookPractitionerPage({ params }: Props) {
           <div className="lg:col-span-2">
             <WizardContainer
               practitionerId={practitioner_id}
+              practitionerHourlyRate={practitioner.hourly_rate || 100}
               rules={rules || []}
               exceptions={exceptions || []}
               bookedSlots={bookedSlots}
