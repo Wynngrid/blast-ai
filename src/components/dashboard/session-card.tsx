@@ -66,24 +66,24 @@ export function SessionCard({ session, showRebook = true }: SessionCardProps) {
 
             {/* Rebook CTA per D-12 */}
             {showRebook && session.status === 'completed' && (
-              <Button asChild size="sm" variant="outline">
-                <Link
-                  href={`/discover/${session.practitioner_id}/book?rebook=true&duration=${durationMinutes}`}
-                >
-                  <RefreshCw className="h-3.5 w-3.5 mr-1.5" />
-                  Rebook
-                </Link>
-              </Button>
+              <Link
+                href={`/discover/${session.practitioner_id}/book?rebook=true&duration=${durationMinutes}`}
+                className="inline-flex items-center justify-center rounded-md border border-input bg-background px-3 py-1.5 text-sm font-medium hover:bg-accent hover:text-accent-foreground"
+              >
+                <RefreshCw className="h-3.5 w-3.5 mr-1.5" />
+                Rebook
+              </Link>
             )}
 
             {/* Review prompt for completed sessions needing review */}
             {session.status === 'completed' && session.needs_review && (
-              <Button asChild size="sm" variant="default">
-                <Link href={`/dashboard/review/${session.id}`}>
-                  <Star className="h-3.5 w-3.5 mr-1.5" />
-                  Leave Review
-                </Link>
-              </Button>
+              <Link
+                href={`/dashboard/review/${session.id}`}
+                className="inline-flex items-center justify-center rounded-md bg-primary px-3 py-1.5 text-sm font-medium text-primary-foreground hover:bg-primary/90"
+              >
+                <Star className="h-3.5 w-3.5 mr-1.5" />
+                Leave Review
+              </Link>
             )}
           </div>
         </div>

@@ -35,12 +35,13 @@ export function BudgetProgress({ coinBalance, totalPurchased, totalSpent }: Budg
                 ~{(coinBalance * coinValueINR).toLocaleString('en-IN')} INR value
               </p>
             </div>
-            <Button asChild>
-              <Link href="/dashboard/buy-coins">
-                <ShoppingCart className="h-4 w-4 mr-2" />
-                Buy Coins
-              </Link>
-            </Button>
+            <Link
+              href="/dashboard/buy-coins"
+              className="inline-flex items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground hover:bg-primary/90"
+            >
+              <ShoppingCart className="h-4 w-4 mr-2" />
+              Buy Coins
+            </Link>
           </div>
         </CardContent>
       </Card>
