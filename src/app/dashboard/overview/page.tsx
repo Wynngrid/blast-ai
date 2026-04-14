@@ -1,8 +1,9 @@
 import { getDashboardStats } from '@/actions/dashboard'
 import { OverviewStats } from '@/components/dashboard/overview-stats'
-import { Button } from '@/components/ui/button'
+import { buttonVariants } from '@/components/ui/button'
 import { Download } from 'lucide-react'
 import { createClient } from '@/lib/supabase/server'
+import { cn } from '@/lib/utils'
 
 export default async function OverviewPage() {
   const { stats, error } = await getDashboardStats()
@@ -36,12 +37,14 @@ export default async function OverviewPage() {
           </p>
         </div>
         {enterprise && (
-          <Button asChild variant="outline">
-            <a href={`/api/reports/${enterprise.id}?period=month`} download>
-              <Download className="h-4 w-4 mr-2" />
-              Download Report
-            </a>
-          </Button>
+          <a
+            href={`/api/reports/${enterprise.id}?period=month`}
+            download
+            className={cn(buttonVariants({ variant: 'outline' }))}
+          >
+            <Download className="h-4 w-4 mr-2" />
+            Download Report
+          </a>
         )}
       </div>
 

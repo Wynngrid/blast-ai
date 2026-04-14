@@ -41,7 +41,7 @@ export async function GET(
 
   const filename = `blast-ai-report-${format(new Date(), 'yyyy-MM-dd')}.pdf`
 
-  return new NextResponse(buffer, {
+  return new NextResponse(new Uint8Array(buffer), {
     status: 200,
     headers: {
       'Content-Type': 'application/pdf',

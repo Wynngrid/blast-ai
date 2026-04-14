@@ -35,7 +35,7 @@ export function ManagerDigestEmail({
   return (
     <Html>
       <Head />
-      <Preview>Your {period} AI Upskilling Summary - {sessionsCompleted} sessions completed</Preview>
+      <Preview>{`Your ${period} AI Upskilling Summary - ${sessionsCompleted} sessions completed`}</Preview>
       <Body style={main}>
         <Container style={container}>
           <Text style={logo}>BLAST AI</Text>
