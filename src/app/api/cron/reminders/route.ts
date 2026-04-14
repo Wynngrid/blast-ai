@@ -88,7 +88,13 @@ export async function GET(req: NextRequest) {
       const practitioner = booking.practitioners as unknown as { id: string; full_name: string; user_id: string } | null
 
       if (!enterprise || !practitioner) {
-        console.error(`Missing enterprise or practitioner data for booking ${booking.id}`)
+        console.error(`Missing enterprise or practitioner data for booking ${booking.id}`, {
+          hasEnterprise: !!enterprise,
+          hasPractitioner: !!practitioner,
+          bookingId: booking.id,
+          enterpriseId: booking.enterprise_id,
+          practitionerId: booking.practitioner_id,
+        })
         continue
       }
 
