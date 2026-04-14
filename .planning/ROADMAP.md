@@ -14,7 +14,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 
 - [x] **Phase 1: Foundation & Authentication** - Supabase setup, RLS on all tables, auth for all user types, RBAC
 - [x] **Phase 2: Practitioner Supply** - Profiles, availability calendar, basic mentor portal, admin approval
-- [ ] **Phase 3: Discovery, Booking & Payments** - Search/browse, booking flow, Razorpay payments, notifications
+- [x] **Phase 3: Discovery, Booking & Payments** - Search/browse, booking flow, Razorpay payments, notifications
 - [ ] **Phase 4: Enterprise Dashboard & Trust** - Team management, budget tracking, reviews, ratings
 
 ## Phase Details
@@ -117,7 +117,7 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4
 |-------|----------------|--------|-----------|
 | 1. Foundation & Authentication | 3/3 | Complete | 2026-04-10 |
 | 2. Practitioner Supply | 5/5 | Complete | 2026-04-12 |
-| 3. Discovery, Booking & Payments | 0/7 | Not started | - |
+| 3. Discovery, Booking & Payments | 7/7 | Complete | 2026-04-14 |
 | 4. Enterprise Dashboard & Trust | 0/2 | Not started | - |
 
 ---
