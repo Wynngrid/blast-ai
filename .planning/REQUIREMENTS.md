@@ -71,7 +71,7 @@ Requirements for April 18, 2026 Masters' Union AI Summit launch.
 - [x] **MENT-01**: Practitioner can manage availability (toggle time blocks)
 - [ ] **MENT-02**: Practitioner can view upcoming sessions with session briefs
 - [ ] **MENT-03**: Practitioner can track earnings and payout status
-- [ ] **MENT-04**: Practitioner can see ratings and reviews received
+- [x] **MENT-04**: Practitioner can see ratings and reviews received
 
 ### Reviews & Trust
 
@@ -187,7 +187,7 @@ Which phases cover which requirements. Updated during roadmap creation.
 | DASH-03 | Phase 4 | Pending |
 | DASH-04 | Phase 4 | Pending |
 | DASH-05 | Phase 4 | Pending |
-| MENT-04 | Phase 4 | Pending |
+| MENT-04 | Phase 4 | Complete |
 | REV-01 | Phase 4 | Complete |
 | REV-02 | Phase 4 | Complete |
 | REV-03 | Phase 4 | Complete |
