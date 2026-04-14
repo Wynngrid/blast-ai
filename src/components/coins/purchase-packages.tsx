@@ -68,9 +68,15 @@ export function PurchasePackages() {
         throw new Error('Razorpay SDK not loaded. Please refresh the page.')
       }
 
+      // Validate Razorpay key before initialization
+      const razorpayKeyId = process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID
+      if (!razorpayKeyId) {
+        throw new Error('Razorpay is not configured. Please contact support.')
+      }
+
       // Open Razorpay checkout per D-18 (embedded)
       const options: RazorpayOptions = {
-        key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID!,
+        key: razorpayKeyId,
         amount,
         currency: 'INR',
         name: 'BLAST AI',
