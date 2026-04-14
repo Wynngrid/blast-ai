@@ -75,10 +75,10 @@ Requirements for April 18, 2026 Masters' Union AI Summit launch.
 
 ### Reviews & Trust
 
-- [ ] **REV-01**: Enterprise can submit NPS rating after session
-- [ ] **REV-02**: Enterprise can write review after session
-- [ ] **REV-03**: Reviews display on practitioner profile
-- [ ] **REV-04**: Aggregate stats (avg rating, total sessions) visible on practitioner card
+- [x] **REV-01**: Enterprise can submit NPS rating after session
+- [x] **REV-02**: Enterprise can write review after session
+- [x] **REV-03**: Reviews display on practitioner profile
+- [x] **REV-04**: Aggregate stats (avg rating, total sessions) visible on practitioner card
 
 ### Notifications
 
@@ -188,10 +188,10 @@ Which phases cover which requirements. Updated during roadmap creation.
 | DASH-04 | Phase 4 | Pending |
 | DASH-05 | Phase 4 | Pending |
 | MENT-04 | Phase 4 | Pending |
-| REV-01 | Phase 4 | Pending |
-| REV-02 | Phase 4 | Pending |
-| REV-03 | Phase 4 | Pending |
-| REV-04 | Phase 4 | Pending |
+| REV-01 | Phase 4 | Complete |
+| REV-02 | Phase 4 | Complete |
+| REV-03 | Phase 4 | Complete |
+| REV-04 | Phase 4 | Complete |
 | NOTF-04 | Phase 4 | Pending |
 
 **Coverage:**

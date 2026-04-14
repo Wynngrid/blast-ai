@@ -105,7 +105,7 @@ Plans:
   - **Rebook CTA**: Add "Rebook" button directly in session history. If enterprise had a great session, one click to book the same practitioner again. Targeting 96%+ rebook rate — this becomes the growth engine.
 
 Plans:
-- [ ] 04-01-PLAN.md — Database schema (session_reviews, session_outcomes), TypeScript types, zod schemas
+- [x] 04-01-PLAN.md — Database schema (session_reviews, session_outcomes), TypeScript types, zod schemas
 - [ ] 04-02-PLAN.md — Review collection system: star rating, NPS input, mandatory modal, submission action
 - [ ] 04-03-PLAN.md — Enterprise dashboard with tabs (Overview, Sessions, Budget), stats, rebook CTA
 - [ ] 04-04-PLAN.md — Review display: practitioner cards, profile sections, portal Reviews tab
@@ -121,7 +121,7 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4
 | 1. Foundation & Authentication | 3/3 | Complete | 2026-04-10 |
 | 2. Practitioner Supply | 5/5 | Complete | 2026-04-12 |
 | 3. Discovery, Booking & Payments | 7/7 | Complete | 2026-04-14 |
-| 4. Enterprise Dashboard & Trust | 0/5 | Not started | - |
+| 4. Enterprise Dashboard & Trust | 1/5 | In Progress|  |
 
 ---
 *Roadmap created: 2026-04-09*
