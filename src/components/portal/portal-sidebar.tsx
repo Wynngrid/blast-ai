@@ -1,6 +1,6 @@
 'use client'
 
-import { Home, User, Calendar, Clock, Wallet, LogOut } from 'lucide-react'
+import { Home, User, Calendar, Clock, Star, Wallet, LogOut } from 'lucide-react'
 import { usePathname } from 'next/navigation'
 import Link from 'next/link'
 import {
@@ -22,6 +22,7 @@ const navItems = [
   { href: '/portal/profile', label: 'Profile', icon: User },
   { href: '/portal/availability', label: 'Availability', icon: Calendar },
   { href: '/portal/sessions', label: 'Sessions', icon: Clock },
+  { href: '/portal/reviews', label: 'Reviews', icon: Star },
   { href: '/portal/earnings', label: 'Earnings', icon: Wallet },
 ]
 

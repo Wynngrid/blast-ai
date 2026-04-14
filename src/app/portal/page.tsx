@@ -2,6 +2,7 @@ import { createClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Calendar, TrendingUp, Star } from 'lucide-react'
+import { getPractitionerReviewStats } from '@/actions/reviews'
 
 export default async function PortalPage() {
   const supabase = await createClient()
@@ -9,7 +10,7 @@ export default async function PortalPage() {
 
   const { data: practitioner } = await supabase
     .from('practitioners')
-    .select('full_name, application_status, bio, specializations, tier, hourly_rate')
+    .select('id, full_name, application_status, bio, specializations, tier, hourly_rate')
     .eq('user_id', user!.id)
     .single()
 
@@ -17,7 +18,11 @@ export default async function PortalPage() {
     redirect('/portal/pending')
   }
 
-  if (practitioner?.application_status === 'rejected') {
+  if (!practitioner) {
+    redirect('/portal/pending')
+  }
+
+  if (practitioner.application_status === 'rejected') {
     return (
       <div className="space-y-6">
         <Card className="border-red-200 bg-red-50">
@@ -36,6 +41,9 @@ export default async function PortalPage() {
       </div>
     )
   }
+
+  // Fetch review stats for approved practitioners
+  const reviewStats = await getPractitionerReviewStats(practitioner.id)
 
   // Approved practitioner view per D-10
   return (
@@ -85,8 +93,14 @@ export default async function PortalPage() {
                   <Star className="h-4 w-4" />
                 </div>
                 <div>
-                  <p className="text-2xl font-bold">--</p>
-                  <p className="text-xs text-muted-foreground">NPS score</p>
+                  <p className="text-2xl font-bold">
+                    {reviewStats.avgRating !== null ? reviewStats.avgRating : '--'}
+                  </p>
+                  <p className="text-xs text-muted-foreground">
+                    {reviewStats.totalReviews > 0
+                      ? `from ${reviewStats.totalReviews} review${reviewStats.totalReviews !== 1 ? 's' : ''}`
+                      : 'Average rating'}
+                  </p>
                 </div>
               </div>
               <div className="flex items-center gap-3">
