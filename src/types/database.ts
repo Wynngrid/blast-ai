@@ -10,6 +10,9 @@ export type PayoutStatus = 'pending' | 'approved' | 'rejected' | 'completed'
 export type NotificationRecipientType = 'enterprise' | 'practitioner'
 export type CancelledByType = 'enterprise' | 'practitioner' | 'admin'
 
+// Phase 4: Review and outcome types
+export type OutcomeTag = 'skill_learned' | 'blocker_resolved' | 'need_followup' | 'not_helpful'
+
 export interface Database {
   public: {
     Tables: {
@@ -328,6 +331,7 @@ export interface Database {
           cancelled_at: string | null
           cancelled_by: CancelledByType | null
           refunded: boolean
+          needs_review: boolean
           created_at: string
           updated_at: string
         }
@@ -350,6 +354,7 @@ export interface Database {
           cancelled_at?: string | null
           cancelled_by?: CancelledByType | null
           refunded?: boolean
+          needs_review?: boolean
           created_at?: string
           updated_at?: string
         }
@@ -372,6 +377,7 @@ export interface Database {
           cancelled_at?: string | null
           cancelled_by?: CancelledByType | null
           refunded?: boolean
+          needs_review?: boolean
           created_at?: string
           updated_at?: string
         }
@@ -525,6 +531,113 @@ export interface Database {
             columns: ['booking_id']
             isOneToOne: false
             referencedRelation: 'bookings'
+            referencedColumns: ['id']
+          }
+        ]
+      }
+      // Phase 4 Tables
+      session_reviews: {
+        Row: {
+          id: string
+          booking_id: string
+          enterprise_id: string
+          practitioner_id: string
+          communication_rating: number
+          expertise_rating: number
+          helpfulness_rating: number
+          nps_score: number
+          comment: string | null
+          is_public: boolean
+          created_at: string
+        }
+        Insert: {
+          id?: string
+          booking_id: string
+          enterprise_id: string
+          practitioner_id: string
+          communication_rating: number
+          expertise_rating: number
+          helpfulness_rating: number
+          nps_score: number
+          comment?: string | null
+          is_public?: boolean
+          created_at?: string
+        }
+        Update: Partial<{
+          id: string
+          booking_id: string
+          enterprise_id: string
+          practitioner_id: string
+          communication_rating: number
+          expertise_rating: number
+          helpfulness_rating: number
+          nps_score: number
+          comment: string | null
+          is_public: boolean
+          created_at: string
+        }>
+        Relationships: [
+          {
+            foreignKeyName: 'session_reviews_booking_id_fkey'
+            columns: ['booking_id']
+            isOneToOne: true
+            referencedRelation: 'bookings'
+            referencedColumns: ['id']
+          },
+          {
+            foreignKeyName: 'session_reviews_enterprise_id_fkey'
+            columns: ['enterprise_id']
+            isOneToOne: false
+            referencedRelation: 'enterprises'
+            referencedColumns: ['id']
+          },
+          {
+            foreignKeyName: 'session_reviews_practitioner_id_fkey'
+            columns: ['practitioner_id']
+            isOneToOne: false
+            referencedRelation: 'practitioners'
+            referencedColumns: ['id']
+          }
+        ]
+      }
+      session_outcomes: {
+        Row: {
+          id: string
+          booking_id: string
+          enterprise_id: string
+          outcome_tags: OutcomeTag[]
+          notes: string | null
+          created_at: string
+        }
+        Insert: {
+          id?: string
+          booking_id: string
+          enterprise_id: string
+          outcome_tags?: OutcomeTag[]
+          notes?: string | null
+          created_at?: string
+        }
+        Update: Partial<{
+          id: string
+          booking_id: string
+          enterprise_id: string
+          outcome_tags: OutcomeTag[]
+          notes: string | null
+          created_at: string
+        }>
+        Relationships: [
+          {
+            foreignKeyName: 'session_outcomes_booking_id_fkey'
+            columns: ['booking_id']
+            isOneToOne: true
+            referencedRelation: 'bookings'
+            referencedColumns: ['id']
+          },
+          {
+            foreignKeyName: 'session_outcomes_enterprise_id_fkey'
+            columns: ['enterprise_id']
+            isOneToOne: false
+            referencedRelation: 'enterprises'
             referencedColumns: ['id']
           }
         ]
