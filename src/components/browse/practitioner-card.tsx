@@ -4,13 +4,16 @@ import { Avatar, AvatarFallback } from '@/components/ui/avatar'
 import { Badge } from '@/components/ui/badge'
 import { TierBadge } from '@/components/portal/tier-badge'
 import { SPECIALIZATION_CATEGORIES } from '@/lib/constants/specializations'
+import { Star } from 'lucide-react'
 import type { PractitionerCard as PractitionerCardData } from '@/actions/browse'
 
 interface PractitionerCardProps {
   practitioner: PractitionerCardData
+  avgRating?: number | null
+  totalReviews?: number
 }
 
-export function PractitionerCard({ practitioner }: PractitionerCardProps) {
+export function PractitionerCard({ practitioner, avgRating, totalReviews }: PractitionerCardProps) {
   // Get primary specialization label (anonymous display per DISC-04)
   const primarySpecId = practitioner.specializations?.[0]
   const primarySpec = SPECIALIZATION_CATEGORIES.find(c => c.id === primarySpecId)
@@ -35,9 +38,17 @@ export function PractitionerCard({ practitioner }: PractitionerCardProps) {
                 <TierBadge tier={practitioner.tier} size="sm" />
               </div>
               {practitioner.bio && (
-                <p className="text-sm text-muted-foreground line-clamp-2 mb-3">
+                <p className="text-sm text-muted-foreground line-clamp-2 mb-2">
                   {practitioner.bio}
                 </p>
+              )}
+              {/* Rating display per D-11 */}
+              {avgRating !== null && avgRating !== undefined && (
+                <div className="flex items-center gap-1 text-sm mb-2">
+                  <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
+                  <span className="font-medium">{avgRating}</span>
+                  <span className="text-muted-foreground">({totalReviews} reviews)</span>
+                </div>
               )}
               {/* Additional specializations */}
               {practitioner.specializations && practitioner.specializations.length > 1 && (

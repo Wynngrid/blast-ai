@@ -1,5 +1,5 @@
 import { Suspense } from 'react'
-import { searchPractitioners, type BrowseFilters } from '@/actions/browse'
+import { searchPractitioners, getPractitionerStatsForCards, type BrowseFilters } from '@/actions/browse'
 import { FilterSidebar } from '@/components/browse/filter-sidebar'
 import { ActiveFilters } from '@/components/browse/active-filters'
 import { SortSelect } from '@/components/browse/sort-select'
@@ -28,6 +28,10 @@ export default async function BrowsePage({ searchParams }: Props) {
 
   // Fetch practitioners server-side
   const { data: practitioners, error } = await searchPractitioners(filters)
+
+  // Fetch review stats for all practitioners (per D-11)
+  const practitionerIds = practitioners.map((p) => p.id)
+  const statsMap = await getPractitionerStatsForCards(practitionerIds)
 
   return (
     <NuqsAdapter>
@@ -67,7 +71,7 @@ export default async function BrowsePage({ searchParams }: Props) {
                 </div>
               ) : (
                 <Suspense fallback={<PractitionerGridSkeleton />}>
-                  <PractitionerGrid practitioners={practitioners} />
+                  <PractitionerGrid practitioners={practitioners} statsMap={statsMap} />
                 </Suspense>
               )}
             </div>

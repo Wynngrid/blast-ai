@@ -1,11 +1,12 @@
 import { PractitionerCard, PractitionerCardSkeleton } from './practitioner-card'
-import type { PractitionerCard as PractitionerCardData } from '@/actions/browse'
+import type { PractitionerCard as PractitionerCardData, PractitionerStats } from '@/actions/browse'
 
 interface PractitionerGridProps {
   practitioners: PractitionerCardData[]
+  statsMap?: Map<string, PractitionerStats>
 }
 
-export function PractitionerGrid({ practitioners }: PractitionerGridProps) {
+export function PractitionerGrid({ practitioners, statsMap }: PractitionerGridProps) {
   if (practitioners.length === 0) {
     return (
       <div className="text-center py-12">
@@ -17,9 +18,17 @@ export function PractitionerGrid({ practitioners }: PractitionerGridProps) {
 
   return (
     <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-      {practitioners.map((practitioner) => (
-        <PractitionerCard key={practitioner.id} practitioner={practitioner} />
-      ))}
+      {practitioners.map((practitioner) => {
+        const stats = statsMap?.get(practitioner.id)
+        return (
+          <PractitionerCard
+            key={practitioner.id}
+            practitioner={practitioner}
+            avgRating={stats?.avgRating}
+            totalReviews={stats?.totalReviews}
+          />
+        )
+      })}
     </div>
   )
 }

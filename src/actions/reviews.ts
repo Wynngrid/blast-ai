@@ -205,3 +205,120 @@ export async function getPractitionerReviewStats(practitionerId: string): Promis
     helpfulness: Math.round(helpfulness * 10) / 10,
   }
 }
+
+// Type for individual review display
+export interface PractitionerReview {
+  id: string
+  communication_rating: number
+  expertise_rating: number
+  helpfulness_rating: number
+  nps_score: number
+  comment: string | null
+  created_at: string
+  enterprise_company: string | null
+}
+
+// Get practitioner reviews for profile display (per D-09, D-10)
+export async function getPractitionerReviews(
+  practitionerId: string,
+  options?: { limit?: number; curated?: boolean }
+): Promise<{ reviews: PractitionerReview[]; error?: string }> {
+  const supabase = await createClient()
+
+  let query = supabase
+    .from('session_reviews')
+    .select(`
+      id,
+      communication_rating,
+      expertise_rating,
+      helpfulness_rating,
+      nps_score,
+      comment,
+      created_at,
+      enterprises!inner (company_name)
+    `)
+    .eq('practitioner_id', practitionerId)
+    .eq('is_public', true)
+
+  if (options?.curated) {
+    // Get top reviews by overall rating for curated highlights per D-10
+    query = query
+      .order('nps_score', { ascending: false })
+      .limit(options.limit || 5)
+  } else {
+    query = query
+      .order('created_at', { ascending: false })
+      .limit(options?.limit || 50)
+  }
+
+  const { data, error } = await query
+
+  if (error) {
+    console.error('Failed to get practitioner reviews:', error)
+    return { reviews: [], error: 'Failed to load reviews' }
+  }
+
+  return {
+    reviews: (data || []).map((r) => ({
+      id: r.id,
+      communication_rating: r.communication_rating,
+      expertise_rating: r.expertise_rating,
+      helpfulness_rating: r.helpfulness_rating,
+      nps_score: r.nps_score,
+      comment: r.comment,
+      created_at: r.created_at,
+      enterprise_company: (r.enterprises as { company_name: string | null })?.company_name || null,
+    })),
+  }
+}
+
+// Get review trends for practitioner portal per D-15
+export async function getPractitionerReviewTrends(practitionerId: string): Promise<{
+  monthlyData: Array<{
+    month: string
+    avgRating: number
+    count: number
+  }>
+  error?: string
+}> {
+  const supabase = await createClient()
+
+  // Get reviews from last 6 months
+  const sixMonthsAgo = new Date()
+  sixMonthsAgo.setMonth(sixMonthsAgo.getMonth() - 6)
+
+  const { data, error } = await supabase
+    .from('session_reviews')
+    .select('communication_rating, expertise_rating, helpfulness_rating, created_at')
+    .eq('practitioner_id', practitionerId)
+    .gte('created_at', sixMonthsAgo.toISOString())
+    .order('created_at', { ascending: true })
+
+  if (error) {
+    console.error('Failed to get review trends:', error)
+    return { monthlyData: [], error: 'Failed to load trends' }
+  }
+
+  // Group by month
+  const monthlyMap = new Map<string, { total: number; count: number }>()
+
+  ;(data || []).forEach((r) => {
+    const date = new Date(r.created_at)
+    const monthKey = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}`
+    const avgRating = (r.communication_rating + r.expertise_rating + r.helpfulness_rating) / 3
+
+    const existing = monthlyMap.get(monthKey) || { total: 0, count: 0 }
+    monthlyMap.set(monthKey, {
+      total: existing.total + avgRating,
+      count: existing.count + 1,
+    })
+  })
+
+  const monthlyData = Array.from(monthlyMap.entries()).map(([month, data]) => ({
+    month,
+    avgRating: Math.round((data.total / data.count) * 10) / 10,
+    count: data.count,
+  }))
+
+  return { monthlyData }
+}
