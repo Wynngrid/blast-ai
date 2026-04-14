@@ -34,7 +34,7 @@ export function NewBookingAlertEmail({
   return (
     <Html>
       <Head />
-      <Preview>New {sessionDuration} minute session booked for {sessionDate}</Preview>
+      <Preview>{`New ${sessionDuration} minute session booked for ${sessionDate}`}</Preview>
       <Body style={styles.body}>
         <Container style={styles.container}>
           <Text style={styles.logo}>BLAST AI</Text>

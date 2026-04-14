@@ -4,6 +4,7 @@ import { createClient } from '@/lib/supabase/server'
 import { revalidatePath } from 'next/cache'
 import { createMeetingWithLink, cancelMeeting } from '@/lib/google-calendar'
 import { spendCoins } from '@/actions/coins'
+import { sendBookingConfirmation, sendNewBookingAlert } from '@/actions/notifications'
 import { createBookingSchema, type CreateBookingInput } from '@/lib/validations/booking'
 import { getSessionCoinCost, calculatePractitionerEarnings } from '@/lib/constants/coins'
 import { addMinutes, parseISO } from 'date-fns'
@@ -153,6 +154,33 @@ export async function createBooking(
     net_amount_inr: earnings.netInr,
     status: 'pending', // Becomes 'available' after session completion
   })
+
+  // Send notifications per NOTF-01, NOTF-02
+  // Send enterprise confirmation (NOTF-01)
+  if (user.email) {
+    await sendBookingConfirmation(booking.id, user.email, {
+      practitionerName: practitioner.full_name,
+      scheduledAt: scheduledAt.toISOString(),
+      sessionDuration: input.sessionDuration,
+      timezone: input.timezone,
+      meetLink: updateData.meet_link || null,
+    })
+  }
+
+  // Send practitioner alert (NOTF-02)
+  // Get practitioner's email from their user profile
+  const { data: practitionerUser } = await supabase
+    .from('practitioners')
+    .select('user_id')
+    .eq('id', input.practitionerId)
+    .single()
+
+  if (practitionerUser) {
+    // Get email from auth - this requires admin client in production
+    // For MVP: use Supabase admin API or store email in practitioners table
+    // Logging for now - the cron job handles reminders for both parties
+    console.log(`[NOTF-02] New booking alert should be sent to practitioner ${input.practitionerId}`)
+  }
 
   revalidatePath('/dashboard')
   revalidatePath('/portal/sessions')

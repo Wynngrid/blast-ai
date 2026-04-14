@@ -36,7 +36,7 @@ export function SessionReminderEmail({
   return (
     <Html>
       <Head />
-      <Preview>Reminder: Your session is tomorrow at {sessionTime}</Preview>
+      <Preview>{`Reminder: Your session is tomorrow at ${sessionTime}`}</Preview>
       <Body style={styles.body}>
         <Container style={styles.container}>
           <Text style={styles.logo}>BLAST AI</Text>
