@@ -7,7 +7,10 @@ import { Separator } from '@/components/ui/separator'
 import { TierBadge } from '@/components/portal/tier-badge'
 import { StatsPlaceholder } from '@/components/portal/stats-display'
 import { SPECIALIZATION_CATEGORIES } from '@/lib/constants/specializations'
-import { ExternalLink, MessageSquare } from 'lucide-react'
+import { ExternalLink } from 'lucide-react'
+import { getPractitionerReviews, getPractitionerReviewStats } from '@/actions/reviews'
+import { ReviewList } from '@/components/reviews/review-list'
+import { StarRating } from '@/components/reviews/star-rating'
 
 interface Props {
   params: Promise<{ id: string }>
@@ -43,6 +46,13 @@ export default async function PractitionerProfilePage({ params }: Props) {
     .select('*')
     .eq('practitioner_id', id)
     .order('display_order')
+
+  // Fetch review stats and reviews in parallel
+  const [statsResult, curatedResult, allResult] = await Promise.all([
+    getPractitionerReviewStats(practitioner.id),
+    getPractitionerReviews(practitioner.id, { curated: true, limit: 5 }),
+    getPractitionerReviews(practitioner.id, { limit: 50 }),
+  ])
 
   // Get specialization labels
   const specLabels = (practitioner.specializations || []).map((specId) => {
@@ -179,19 +189,44 @@ export default async function PractitionerProfilePage({ params }: Props) {
               </Card>
             )}
 
-            {/* Reviews Placeholder (per PROF-06) */}
+            {/* Reviews Section per D-09, D-10 */}
             <Card>
               <CardHeader>
-                <CardTitle>Reviews</CardTitle>
+                <div className="flex items-center justify-between">
+                  <CardTitle>Reviews</CardTitle>
+                  {statsResult.avgRating !== null && (
+                    <div className="flex items-center gap-2">
+                      <StarRating value={Math.round(statsResult.avgRating)} readonly size="sm" />
+                      <span className="font-medium">{statsResult.avgRating}</span>
+                      <span className="text-muted-foreground text-sm">({statsResult.totalReviews} reviews)</span>
+                    </div>
+                  )}
+                </div>
               </CardHeader>
               <CardContent>
-                <div className="flex flex-col items-center justify-center py-8 text-center">
-                  <MessageSquare className="h-12 w-12 text-muted-foreground/50 mb-4" />
-                  <p className="text-muted-foreground">No reviews yet</p>
-                  <p className="text-sm text-muted-foreground/70 mt-1">
-                    Reviews will appear here after completed sessions
-                  </p>
-                </div>
+                {/* Per-criteria breakdown */}
+                {statsResult.totalReviews > 0 && (
+                  <div className="grid grid-cols-3 gap-4 p-4 bg-muted/50 rounded-lg mb-6">
+                    <div className="text-center">
+                      <p className="text-2xl font-bold">{statsResult.communication}</p>
+                      <p className="text-sm text-muted-foreground">Communication</p>
+                    </div>
+                    <div className="text-center">
+                      <p className="text-2xl font-bold">{statsResult.expertise}</p>
+                      <p className="text-sm text-muted-foreground">Expertise</p>
+                    </div>
+                    <div className="text-center">
+                      <p className="text-2xl font-bold">{statsResult.helpfulness}</p>
+                      <p className="text-sm text-muted-foreground">Helpfulness</p>
+                    </div>
+                  </div>
+                )}
+
+                <ReviewList
+                  curatedReviews={curatedResult.reviews}
+                  allReviews={allResult.reviews}
+                  totalCount={statsResult.totalReviews}
+                />
               </CardContent>
             </Card>
           </div>
