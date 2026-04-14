@@ -43,20 +43,9 @@ export async function POST(req: NextRequest) {
         return NextResponse.json({ error: 'Invalid payment notes' }, { status: 400 })
       }
 
-      // Check idempotency - prevent duplicate credits per T-03-12
-      const { data: existing } = await supabaseAdmin
-        .from('coin_transactions')
-        .select('id')
-        .eq('reference_id', paymentId)
-        .single()
-
-      if (existing) {
-        console.log('Payment already processed:', paymentId)
-        return NextResponse.json({ received: true, duplicate: true })
-      }
-
       // Credit coins to enterprise wallet per D-12, D-16
       // Per T-03-11: Balance calculated from ledger, not stored as field
+      // Per T-03-12: Idempotency via UNIQUE constraint on reference_id (race-condition safe)
       const { error: insertError } = await supabaseAdmin
         .from('coin_transactions')
         .insert({
@@ -65,7 +54,7 @@ export async function POST(req: NextRequest) {
           amount: coins, // Positive for purchase
           unit_price_inr: Math.round(payment.amount / 100 / coins), // Actual price paid per coin
           expires_at: getCoinExpiryDate().toISOString(),
-          reference_id: paymentId,
+          reference_id: paymentId, // UNIQUE constraint in DB prevents duplicates
           metadata: {
             razorpay_order_id: orderId,
             razorpay_payment_id: paymentId,
@@ -73,6 +62,11 @@ export async function POST(req: NextRequest) {
         })
 
       if (insertError) {
+        // Check if it's a unique constraint violation (duplicate webhook delivery)
+        if (insertError.code === '23505') { // PostgreSQL unique violation
+          console.log('Payment already processed (concurrent webhook):', paymentId)
+          return NextResponse.json({ received: true, duplicate: true })
+        }
         console.error('Failed to credit coins:', insertError)
         return NextResponse.json({ error: 'Failed to credit coins' }, { status: 500 })
       }
