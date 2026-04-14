@@ -79,13 +79,13 @@ Plans:
   - **BLAST Coins**: Platform uses coin-based currency (1 coin = $10). Enterprises buy coins, see costs in coins. Practitioners see earnings in INR only, never coins or commission percentages.
 
 Plans:
-- [ ] 03-01-PLAN.md — Database schema, TypeScript types, coin constants, package installation
-- [ ] 03-02-PLAN.md — Discovery browse page with filters (specialization, industry, tier), sorting, practitioner cards
-- [ ] 03-03-PLAN.md — Booking wizard core: session type selection, structured brief form, slot picker
-- [ ] 03-04-PLAN.md — Coin payment system: Razorpay integration, coin purchase, balance, spending
-- [ ] 03-05-PLAN.md — Booking completion: Google Meet link generation, confirmation page, .ics download
-- [ ] 03-06-PLAN.md — Practitioner earnings dashboard, payout requests, sessions view with briefs
-- [ ] 03-07-PLAN.md — Email notifications: booking confirmation, new booking alert, 24-hour reminders
+- [x] 03-01-PLAN.md — Database schema, TypeScript types, coin constants, package installation
+- [x] 03-02-PLAN.md — Discovery browse page with filters (specialization, industry, tier), sorting, practitioner cards
+- [x] 03-03-PLAN.md — Booking wizard core: session type selection, structured brief form, slot picker
+- [x] 03-04-PLAN.md — Coin payment system: Razorpay integration, coin purchase, balance, spending
+- [x] 03-05-PLAN.md — Booking completion: Google Meet link generation, confirmation page, .ics download
+- [x] 03-06-PLAN.md — Practitioner earnings dashboard, payout requests, sessions view with briefs
+- [x] 03-07-PLAN.md — Email notifications: booking confirmation, new booking alert, 24-hour reminders
 
 ### Phase 4: Enterprise Dashboard & Trust
 **Goal**: Enterprises can manage team sessions and practitioners accumulate trust signals
