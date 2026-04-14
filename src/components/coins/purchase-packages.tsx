@@ -92,8 +92,14 @@ export function PurchasePackages() {
         },
       }
 
-      const rzp = new window.Razorpay(options)
-      rzp.open()
+      // Wrap Razorpay instantiation to catch SDK initialization errors
+      try {
+        const rzp = new window.Razorpay(options)
+        rzp.open()
+      } catch (sdkError) {
+        console.error('Razorpay SDK error:', sdkError)
+        throw new Error('Failed to initialize payment. Please try again or contact support.')
+      }
     } catch (error) {
       console.error('Purchase error:', error)
       toast.error(error instanceof Error ? error.message : 'Purchase failed')
